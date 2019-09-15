@@ -3,10 +3,6 @@
 	8/26/2019
 	
 	Wassup, it's ya boi skinny comment.
-
-	This program is intended to conform to the specifications
-	of the C language as defined by the C11 standard!
-	If your compile doesn't support C11 features, go away.
 */
 
 #ifdef _MSC_VER
@@ -17,16 +13,6 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
-//#include <thread.h>
-
-/*
-	This is a nonstandard header included with Windows.
-	It allows reading keyboard input without pressing enter,
-	testing whether a key has been pressed, and converting
-	scan codes to legible characters. Kind of sucks that C
-	doesn't let you do that normally. Even LC-3 did.
-*/
-#include <conio.h>
 
 #include "key_stuff.h"
 #include "menu_stuff.h"
@@ -68,13 +54,19 @@ int main()
 	
 	map_all_keys();
 
+	create_input_thread();
+
 	//Main loop
 
 	int not_dead = 1;
-	int key_index;
+	//int key_index;
 	while (not_dead)
 	{
-		if (_kbhit())
+		if (key_index == -1) {
+			monitor_input = 0;
+		}
+		//animate_idle(spinning_line, 125);
+		/*if (_kbhit())
 		{
 			key_index = get_mapped_key(get_pressed_key());
 			if (key_index != -1)
@@ -85,7 +77,7 @@ int main()
 		else
 		{
 			animate_idle(spinning_line, 1250);
-		}
+		}*/
 	}
 
 	return 0;

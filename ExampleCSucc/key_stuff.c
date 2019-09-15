@@ -3,10 +3,19 @@
 #include <string.h>
 #include <signal.h>
 
+/*
+	This is a nonstandard header included with Windows.
+	It allows reading keyboard input without pressing enter,
+	testing whether a key has been pressed, and converting
+	scan codes to legible characters. Kind of sucks that C
+	doesn't let you do that normally. Even LC-3 did.
+*/
 #include <conio.h>
-#include <process.h>
+//MULTITHREAD ALL THE THINGS
+#include <Windows.h>
 
 #include "key_stuff.h"
+#include "menu_stuff.h"
 
 #pragma region PrintfMacros
 //region PrintfMacros
@@ -72,7 +81,7 @@ void handle_ctrl_c(int sig) {
 }
 
 //This function polls for user input and returns the address used to reference that input.
-int get_pressed_key()
+int *get_pressed_key()
 {
 	input[0] = _getch();
 	input[1] = 0;
@@ -86,7 +95,7 @@ int get_pressed_key()
 		input[0] = _getch();
 		input[1] = 2;
 	}
-	return (int)&input;
+	return input;
 }
 
 /*
@@ -1143,18 +1152,18 @@ void print_keycode(int *input_key)
 */
 void create_keys(const char *key_names[], unsigned int size_of_keys) {
 	if (keys_created == 0) {
-		int key_count_temp = size_of_keys / sizeof(key_names[0]);	//This local is used to make a warning shut up
-		key_mappings = malloc(key_count_temp * sizeof(key_map));
+		key_count = size_of_keys / sizeof(key_names[0]);	//This local is used to make a warning shut up
+		key_mappings = malloc(key_count * sizeof(key_map));
 		if (key_mappings == NULL) {
-			printf("malloc of size %d failed!\n", (key_count_temp * sizeof(key_map)));
+			printf("malloc of size %d failed!\n", (int)(key_count * sizeof(key_map)));
 			exit(1);
 		}
-		for (int i = 0; i < key_count_temp; i++) {
+		for (int i = 0; i < key_count; i++) {
+#pragma warning(suppress:6386)
 			key_mappings[i].key_name = key_names[i];
 			key_mappings[i].key_code[0] = 0;
 			key_mappings[i].key_code[1] = 0;
 		}
-		key_count = key_count_temp;
 		keys_created = 1;
 	}
 }
@@ -1184,9 +1193,9 @@ void map_all_keys() {
 }
 
 //If the input keycode is bound, returns the index of the keybind. Otherwise returns -1.
-int get_mapped_key(int input_key) {
+int get_mapped_key(int *input_key) {
 	for (int i = 0; i < key_count; i++) {
-		if (memcmp(key_mappings[i].key_code, (void*)input_key, sizeof(input_key)) == 0) {
+		if (memcmp(key_mappings[i].key_code, input_key, sizeof(input_key)) == 0) {
 			return i;
 		}
 	}
@@ -1202,3 +1211,45 @@ const char *get_indexed_key_name(int key_index) {
 		return null_key.key_name;
 	}
 }
+
+int monitor_input = 1;
+int key_index;
+static DWORD WINAPI monitor_input_function(LPVOID lol_whats_an_lpvoid) {
+	//This is some extra sketchy thread junk. It prob
+	while (monitor_input) {
+		if (_kbhit())
+		{
+			key_index = get_mapped_key(get_pressed_key());
+			if (key_index != -1)
+			{
+				printf("%s\n", get_indexed_key_name(key_index));
+			}
+		}
+		/*else {
+		  	animate_idle(spinning_line, 125);
+		}*/
+	}
+	ExitThread((DWORD)0);
+}
+
+int input_thread_id;
+HANDLE input_handle;
+//Vague attempt at multithreading
+void create_input_thread() {
+	input_handle = CreateThread((LPSECURITY_ATTRIBUTES)NULL, (DWORD)0, (LPTHREAD_START_ROUTINE)&monitor_input_function, (LPVOID)NULL, (DWORD)4, (LPDWORD)&input_thread_id);
+}
+
+void suspend_input_thread() {
+	SuspendThread(input_handle);
+}
+
+void resume_input_thread() {
+	ResumeThread(input_handle);
+}
+
+//int get_input_exit_code() {
+//	DWORD exit_code = 0;
+//	LPDWORD exit_code_p = &exit_code;
+//	GetExitCodeThread(input_handle, exit_code_p);
+//	return (int)exit_code;
+//}
