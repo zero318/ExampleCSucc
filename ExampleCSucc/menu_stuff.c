@@ -45,3 +45,8 @@ void animate_idle(idle_types idle_type, int delay) {
 		idle_timer++;
 	}
 }
+
+int menu_choice() {
+
+	return 0;
+}

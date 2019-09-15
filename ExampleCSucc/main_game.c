@@ -40,8 +40,7 @@
 //	return 0;
 //}
 
-int main()
-{
+int main() {
 	//Prevents Ctrl+C closing the program
 	signal(SIGINT, handle_ctrl_c);
 	
@@ -60,8 +59,8 @@ int main()
 
 	int not_dead = 1;
 	//int key_index;
-	while (not_dead)
-	{
+	resume_input_thread();
+	while (not_dead) {
 		if (key_index == -1) {
 			monitor_input = 0;
 		}

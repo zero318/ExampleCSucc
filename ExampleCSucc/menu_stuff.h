@@ -13,4 +13,5 @@ typedef enum cool_idle_animations {
 } idle_types;
 //Awesome idle animations
 void animate_idle(idle_types idle_type, int delay);
+int menu_choice();
 #endif

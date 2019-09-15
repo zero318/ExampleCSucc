@@ -81,8 +81,7 @@ void handle_ctrl_c(int sig) {
 }
 
 //This function polls for user input and returns the address used to reference that input.
-int *get_pressed_key()
-{
+int *get_pressed_key() {
 	input[0] = _getch();
 	input[1] = 0;
 	if (input[0] == 0xE0)
@@ -1181,8 +1180,11 @@ void map_one_key() {
 
 }
 
+int monitor_input = 1;
+
 //Loops through the key_mappings array and prompts the user to bind every key.
 void map_all_keys() {
+	monitor_input = 0;
 	for (int i = 0; i < key_count; i++) {
 		printf("Press a key to map to \"%s\":   \t", key_mappings[i].key_name);
 		get_pressed_key();
@@ -1190,6 +1192,7 @@ void map_all_keys() {
 		print_key(key_mappings[i].key_code);
 		printf("\n");
 	}
+	monitor_input = 1;
 }
 
 //If the input keycode is bound, returns the index of the keybind. Otherwise returns -1.
@@ -1212,7 +1215,6 @@ const char *get_indexed_key_name(int key_index) {
 	}
 }
 
-int monitor_input = 1;
 int key_index;
 static DWORD WINAPI monitor_input_function(LPVOID lol_whats_an_lpvoid) {
 	//This is some extra sketchy thread junk. It prob
