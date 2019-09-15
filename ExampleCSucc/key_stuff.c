@@ -1168,31 +1168,52 @@ void create_keys(const char *key_names[], unsigned int size_of_keys) {
 }
 
 //Returns the number of keys. If keys haven't been created, returns -1;
-int get_key_count() {
-	if (keys_created) {
-		return key_count;
-	}
-	return -1;
-}
-
-//WIP
-void map_one_key() {
-
-}
+//int get_key_count() {
+//	if (keys_created) {
+//		return key_count;
+//	}
+//	return -1;
+//}
 
 int monitor_input = 1;
 
+static void bind_key(int key_index, int j_count) {
+	monitor_input = 0;
+	int key_already_bound;
+	int* key_pointer;
+	do {
+		key_already_bound = 0;
+		printf("Press a key to map to \"%s\":   \t", key_mappings[key_index].key_name);
+		key_pointer = get_pressed_key();
+		print_key(key_pointer);
+		for (int j = 0; j < j_count; j++) {
+			if (memcmp(key_mappings[j].key_code, input, sizeof(input)) == 0) {
+				key_already_bound = j + 1;
+			}
+		}
+		if (key_already_bound) {
+			printf("\n");
+			print_key(key_pointer);
+			printf(" is already bound to %s!\n\n", get_indexed_key_name(get_mapped_key(key_pointer)));
+		}
+	} while (key_already_bound);
+	memcpy(key_mappings[key_index].key_code, input, sizeof(input));
+	printf("\n\n");
+	monitor_input = 1;
+}
+
+//Checks if a key exists and prompts the user to bind it
+void map_one_key(int key_index) {
+	if ((key_index >= 0) && (key_index <= key_count)) {
+		bind_key(key_index, key_count);
+	}
+}
+
 //Loops through the key_mappings array and prompts the user to bind every key.
 void map_all_keys() {
-	monitor_input = 0;
 	for (int i = 0; i < key_count; i++) {
-		printf("Press a key to map to \"%s\":   \t", key_mappings[i].key_name);
-		get_pressed_key();
-		memcpy(key_mappings[i].key_code, input, sizeof(input));
-		print_key(key_mappings[i].key_code);
-		printf("\n");
+		bind_key(i, i);
 	}
-	monitor_input = 1;
 }
 
 //If the input keycode is bound, returns the index of the keybind. Otherwise returns -1.

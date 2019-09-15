@@ -17,7 +17,9 @@ void print_keycode(int *input_key);
 */
 void create_keys(const char *key_names[], unsigned int size_of_keys);
 //Returns the number of keys. If keys haven't been created, returns -1;
-int get_key_count();
+//int get_key_count();
+//Checks if a key exists and prompts the user to bind it
+void map_one_key(int key_index);
 //Loops through the key_mappings array and prompts the user to bind every key.
 void map_all_keys();
 //If the input keycode is bound, returns the index of the keybind. Otherwise returns -1.
