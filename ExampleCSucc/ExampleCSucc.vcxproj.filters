@@ -18,10 +18,10 @@
     <ClCompile Include="key_stuff.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="menu_stuff.c">
+    <ClCompile Include="main_game.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main_game.c">
+    <ClCompile Include="screen_stuff.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,11 +29,16 @@
     <ClInclude Include="key_stuff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="menu_stuff.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="main_game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="screen_stuff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="taco.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

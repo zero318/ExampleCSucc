@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Example C Program
 	8/26/2019
 	
@@ -13,9 +13,14 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
+//#include <stdbool.h>
+
+#include <conio.h>
+#include <Windows.h>
+#include <mmsystem.h>
 
 #include "key_stuff.h"
-#include "menu_stuff.h"
+#include "screen_stuff.h"
 #include "main_game.h"
 
 //int ChrisSucc() {
@@ -41,13 +46,28 @@
 //}
 
 int main() {
+	adjustWindowSize(80, 25);
 	//Prevents Ctrl+C closing the program
 	signal(SIGINT, handle_ctrl_c);
 	
 	//Bind keys at startup
 
 	//The array index of get_mapped_key() corresponds to the index of the key in this list
-	const char *keys[] = { "Move Up", "Move Left", "Move Down", "Move Right", "Select", "Back" };
+	const char *keys[] = {
+		"Move Up",
+		"Move Left",
+		"Move Down",
+		"Move Right",
+		"Select",
+		"Back"
+	};
+
+	const char *main_menu[] = {
+		"New Game",
+		"Continue Game",
+		"Settings",
+		"Exit"
+	};
 		
 	create_keys(keys, sizeof(keys));
 	
@@ -57,13 +77,53 @@ int main() {
 
 	//Main loop
 
-	int not_dead = 1;
+	int game_state = 1;
 	//int key_index;
 	resume_input_thread();
-	while (not_dead) {
-		if (key_index == -1) {
-			monitor_input = 0;
+	while (game_state) {
+		switch (game_state)
+		{
+			//Exit
+			case 0:
+				monitor_input = 0;
+				break;
+			//Title Screen
+			case 1:
+				adjustWindowSize(121, 40);
+				//This line is the title screen string.
+				PlaySound(TEXT("taco.wav"), NULL, (SND_FILENAME + SND_LOOP + SND_ASYNC));
+				printf("                                                                                                                        \n     =                                                                                                                  \n     WXAI=               =   =IAAXI                                                          M=           A=            \n     XA =AXXA=          =WXAAI=         WI======                                              MA        IMI             \n     =W      IXA=        W             IWIIIIIIIXX   IA                                        AX=     XA               \n      MI       =AX=      W             AX        =M= AX         MX      IXAXI                    XX  =M=                \n       W          XA     MI            XA         =W AX         W=    XXI                         =MXM                  \n       XA          MI    XA            MI          W AX        IM    MA                            AMM=                 \n       =W          =W    XA            W=         XX IM        MI   IM                            IM  XA                \n        W           IM   XMAAAAAXAXA   W=      IXXI   W        W    MI        IA=                =W    IMI              \n        W           =W   =W            WI=IAXMXI      MI      IM    W=     XAXI MI               W=      AX             \n        W=          XA    W=          IWXAIIIIXXI     IX      XA    W=          IM              MI        =MI           \n        MI         IM     W=           MI       XX    =W      W     MI          MA             XX           MA          \n        XA        IM     =W            XI       IM     XA    MI     =MAAAIIIAAXXI             IM             =          \n        XA        W=     IM            XA       MI     =WAAXX=                                I                         \n        AX       AX      AX         == AX     IMA                                                                       \n        AX      XA       XA   =IAXXXI=  W   XXI                                                                         \n        XA    AM=        IAAAAI=        MXXX=                                                                           \n        XA=IXXA                         IA                                                                              \n        XXA=                                                                                                            \n                                                                                                                I       \n                                                                                   I ==        IAA=            =W       \n                              ===========                 I         ==IXXXAAA AXAXMWAII      IMIAMI   MX        MI      \n             =XXXX            WIIIIIIIIII=  AW=       AAAXWXAAI   AAII=XA         AX        MA    XX  WXX       =W      \n          =AXA               IM             MAMA          W            XA         W=       XX      W= W XA       W=     \n        AMA                  XA             W= IXA        W            XA        =M       AX       W =W  XA      W=     \n       IM                    W=             W    IW       W            W=        IX      =W        W =W   MA    =W      \n       MA                    W        ==   =M     W       W            W         IX      IM       IM =W    MI   IM      \n       W                    IWAAAXAAAAII   XA     W       W           IM         IX      =M       MI =W     MI  XA      \n       W                    XA             W=    AX       W           XA         IX       XX     XX  =W     =W= W=      \n       W=                   XI            =W    =W        W           W=         =W        XA  IMA   IM      IMIM       \n       IM                   MI            AX   =W=        W=IAXI     IM           W=       =XAXI     AX       MWX       \n        AM         =XI     =W       ==    AA =AM=    IIAXXMI=        AX         =IMXAAXAAAA=         AA        WA       \n         IXXI===AXXA       IWIAAAXXAII    AMXA=      ==              MI       =AI===                 I=                 \n            =III=           I=            ==                         MI                                                 \n                                                                                                                        \n                                                                                                                        \n                                                                                                            \n                                                                                                                        \n(C)69BC-Waffle http://nazr.in/18vx                                                                                      ");
+				COORD flash_letters_coord = {44, 37};
+				int flash_letters = 0;
+				//char flash_delay_key[20];
+				//RegGetValue(HKEY_CURRENT_USER, "Control Panel\\Desktop", "CursorBlinkRate", RRF_RT_REG_SZ, 0, flash_delay_key, sizeof(flash_delay_key));
+				//int flash_delay = atoi(flash_delay_key) * 10;
+				int flash_delay = 5300;
+				while (_kbhit() == 0) {
+					if (flash_letters == 2 * flash_delay) {
+						flash_letters = 0;
+					}
+					if (flash_letters == 0) {
+						SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), flash_letters_coord);
+						printf("                                ");
+					}
+					else if (flash_letters == flash_delay) {
+						SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), flash_letters_coord);
+						printf("Press Any Key to not Succ Ballz!");
+					}
+					flash_letters++;
+				}
+				game_state = 2;
+				break;
+			//Main Menu
+			case 2:
+				//cls(GetStdHandle(STD_OUTPUT_HANDLE));
+				while(1) {}
+				break;
 		}
+		/*if (key_index == -1) {
+			monitor_input = 0;
+		}*/
 		//animate_idle(spinning_line, 125);
 		/*if (_kbhit())
 		{
@@ -78,6 +138,6 @@ int main() {
 			animate_idle(spinning_line, 1250);
 		}*/
 	}
-
+	while (1) {}
 	return 0;
 }

@@ -15,7 +15,7 @@
 #include <Windows.h>
 
 #include "key_stuff.h"
-#include "menu_stuff.h"
+#include "screen_stuff.h"
 
 #pragma region PrintfMacros
 //region PrintfMacros
@@ -1178,7 +1178,7 @@ void create_keys(const char *key_names[], unsigned int size_of_keys) {
 int monitor_input = 1;
 
 static void bind_key(int key_index, int j_count) {
-	monitor_input = 0;
+	suspend_input_thread();
 	int key_already_bound;
 	int* key_pointer;
 	do {
@@ -1200,6 +1200,7 @@ static void bind_key(int key_index, int j_count) {
 	memcpy(key_mappings[key_index].key_code, input, sizeof(input));
 	printf("\n\n");
 	monitor_input = 1;
+	resume_input_thread();
 }
 
 //Checks if a key exists and prompts the user to bind it
@@ -1219,7 +1220,7 @@ void map_all_keys() {
 //If the input keycode is bound, returns the index of the keybind. Otherwise returns -1.
 int get_mapped_key(int *input_key) {
 	for (int i = 0; i < key_count; i++) {
-		if (memcmp(key_mappings[i].key_code, input_key, sizeof(input_key)) == 0) {
+		if (memcmp(key_mappings[i].key_code, input_key, sizeof(key_mappings[i].key_code)) == 0) {
 			return i;
 		}
 	}
@@ -1263,11 +1264,15 @@ void create_input_thread() {
 }
 
 void suspend_input_thread() {
-	SuspendThread(input_handle);
+	if (input_thread_id) {
+		SuspendThread(input_handle);
+	}
 }
 
 void resume_input_thread() {
-	ResumeThread(input_handle);
+	if (input_thread_id) {
+		ResumeThread(input_handle);
+	}
 }
 
 //int get_input_exit_code() {
