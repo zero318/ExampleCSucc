@@ -1,0 +1,203 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+//I had to use strlen() instead of sizeof() since apparently
+//sizeof() can't handle retreiving data from a pointer.
+#include <string.h>
+
+#include <Windows.h>
+#include <mmsystem.h>
+
+#include "main_game.h"
+
+#pragma warning(disable:4996)
+
+char illegal_character[] = "";
+char double_consonant[] = "";
+char ending_consonant[] = "";
+char wtf[] = "";
+
+char okina[] = "'";
+
+char *hawaiify(char *character, int position) {
+	switch (character[0])
+	{
+		default:
+			return illegal_character;
+		case 'p':
+		case 'k':
+		case 'h':
+		case 'l':
+		case 'm':
+		case 'n':
+		case '\'':
+		case 'w':
+			switch (character[1])
+			{
+				case '\0':
+					return ending_consonant;
+				case 'p':
+				case 'k':
+				case 'h':
+				case 'l':
+				case 'm':
+				case 'n':
+				case '\'':
+				case 'w':
+					return double_consonant;
+			}
+		case 'a':
+		case 'e':
+		case 'i':
+		case 'o':
+		case 'u':
+			break;
+	}
+	switch (character[0])
+	{
+		case 'p':
+			return "p";
+		case 'k':
+			return "k";
+		case 'h':
+			return "h";
+		case 'l':
+			return "l";
+		case 'm':
+			return "m";
+		case 'n':
+			return "n";
+		case '\'':
+			return okina;
+		case 'w':
+			if (position == 0) {
+				return "w";
+			}
+			else {
+				switch (character[-1])
+				{
+					case 'a':
+					case 'o':
+					case 'u':
+					default:
+						return "w";
+					case 'e':
+					case 'i':
+						return "v";
+				}
+			}
+		case 'a':
+			switch (character[1])
+			{
+				case 'e':
+				case 'i':
+					return "eye-";
+				case 'o':
+				case 'u':
+					return "ow-";
+				default:
+					return "ah-";
+			}
+		case 'e':
+			switch (character[1])
+			{
+				case 'i':
+					return "ay-";
+				default:
+					return "eh-";
+			}
+		case 'i':
+			switch (character[1])
+			{
+				case 'u':
+					return "ew-";
+				default:
+					return "ee-";
+			}
+		case 'o':
+			switch (character[1])
+			{
+				case 'i':
+					return "oy-";
+				case 'u':
+					return "ow-";
+				default:
+					return "oh-";
+			}
+		case 'u':
+			switch (character[1])
+			{
+				case 'i':
+					return "ooey-";
+				default:
+					return "oo-";
+			}
+	}
+	return wtf;
+}
+
+int main2() {
+	PlaySound(TEXT(BGMUSIC), NULL, (SND_FILENAME + SND_LOOP + SND_ASYNC));//lol
+	printf("Enter a Hawaiian word:\n");
+	fflush(stdout);
+	char word[BUFSIZ];//I'd rather call this input_string
+	(void)scanf("%s", &word);
+	int input_length = 0;
+	while (word[input_length] != '\0') {
+		input_length++;
+	}
+	char *output_temp;
+	size_t output_length = -1;
+	char* output_string = NULL;
+	size_t output_index = 0;
+	for (int i = 0; i < 3; i++) {
+		//This same loop is reused for sizing the output string and initializing it
+		//i == 0: size;		i == 1: initialize;		i == 2: print
+		if (i == 1) {
+			output_string = (char*)malloc(output_length * sizeof(char));
+		}
+		else if (i == 2) {
+			output_string[output_length] = '\0';
+			printf("%s\n", output_string);
+		}
+		for (int j = 0; j < input_length; j++) {
+			output_temp = hawaiify(&word[j], j);
+			if ((i == 0) && ((output_temp == illegal_character) || (output_temp == double_consonant) || (output_temp == ending_consonant) || (output_temp == wtf))) {
+				switch (output_temp[0])
+				{
+					case '':
+						printf("Character %c is not allowed.", word[j]);
+						break;
+					case '':
+						printf("Double consonants: %c%c", word[j], word[j + 1]);
+						break;
+					case '':
+						printf("Consonant %c at end of the word.", word[j]);
+						break;
+					case '':
+						printf("WTF did you do?");
+						break;
+				}
+				j = input_length;
+				i = 3;
+			}
+			else if (output_temp != okina) {
+				if (i == 0) {
+					output_length += strlen(output_temp);
+				}
+				else {
+					memcpy((output_string + (output_index * sizeof(char))), output_temp, (strlen(output_temp) * sizeof(char)));
+					output_index += strlen(output_temp);
+				}
+			}
+			else if (i == 1) {
+				if (output_string) {
+					output_string[output_index - 1] = '\'';
+				}
+			}
+		}
+	}
+	while (1) {};
+	//printf("BE GONE HAWAII\n");
+	return 0;
+}

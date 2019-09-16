@@ -13,7 +13,7 @@ typedef enum cool_idle_animations {
 } idle_types;
 //Awesome idle animations
 void animate_idle(idle_types idle_type, int delay);
+void cls();
 void adjustWindowSize(short width, short height);
 int menu_choice();
-//void cls(HANDLE hConsole);
 #endif

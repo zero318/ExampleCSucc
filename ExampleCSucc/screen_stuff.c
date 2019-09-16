@@ -49,6 +49,14 @@ void animate_idle(idle_types idle_type, int delay) {
 	}
 }
 
+COORD top_left = { 0, 0 };
+void cls() {
+	for (int i = 0; i < 42; i++) {
+		printf("\n");
+	}
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), top_left);
+}
+
 void adjustWindowSize(short width, short height) {
 	SMALL_RECT test;
 
@@ -67,52 +75,9 @@ void adjustWindowSize(short width, short height) {
 	test.Bottom = coord.Y - 1;
 
 	SetConsoleWindowInfo(hStdout, ok, &test);
-
 }
 
 int menu_choice() {
 
 	return 0;
 }
-
-///* Standard error macro for reporting API errors */
-//#define PERR(bSuccess, api){if(!(bSuccess)) printf("%s:Error %d from %s on line % d\n", __FILE__, GetLastError(), api, __LINE__);}
-//
-//void cls(HANDLE hConsole) {
-//	COORD coordScreen = { 0, 0 };    /* here's where we'll home the
-//										cursor */
-//	BOOL bSuccess;
-//	DWORD cCharsWritten;
-//	CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */
-//	DWORD dwConSize;                 /* number of character cells in
-//										the current buffer */
-//
-//										/* get the number of character cells in the current buffer */
-//
-//	bSuccess = GetConsoleScreenBufferInfo(hConsole, &csbi);
-//	PERR(bSuccess, "GetConsoleScreenBufferInfo");
-//	dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
-//
-//	/* fill the entire screen with blanks */
-//
-//	bSuccess = FillConsoleOutputCharacter(hConsole, (TCHAR) ' ',
-//		dwConSize, coordScreen, &cCharsWritten);
-//	PERR(bSuccess, "FillConsoleOutputCharacter");
-//
-//	/* get the current text attribute */
-//
-//	bSuccess = GetConsoleScreenBufferInfo(hConsole, &csbi);
-//	PERR(bSuccess, "ConsoleScreenBufferInfo");
-//
-//	/* now set the buffer's attributes accordingly */
-//
-//	bSuccess = FillConsoleOutputAttribute(hConsole, csbi.wAttributes,
-//		dwConSize, coordScreen, &cCharsWritten);
-//	PERR(bSuccess, "FillConsoleOutputAttribute");
-//
-//	/* put the cursor at (0, 0) */
-//
-//	bSuccess = SetConsoleCursorPosition(hConsole, coordScreen);
-//	PERR(bSuccess, "SetConsoleCursorPosition");
-//	return;
-//}

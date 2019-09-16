@@ -23,7 +23,7 @@
 #include "screen_stuff.h"
 #include "main_game.h"
 
-//int ChrisSucc() {
+//int ChrisSucc1() {
 //	char InputCharrot;
 //	scanf("%c", &InputCharrot);
 //	if ((65 <= InputCharrot) && (InputCharrot <= 90)) {
@@ -45,8 +45,14 @@
 //	return 0;
 //}
 
+#include "hawaii.h"
+
 int main() {
-	adjustWindowSize(80, 25);
+	main2();
+	SetConsoleTitle("Debug X: C Edition");
+	//adjustWindowSize(80, 25);
+	adjustWindowSize(121, 40);
+
 	//Prevents Ctrl+C closing the program
 	signal(SIGINT, handle_ctrl_c);
 	
@@ -65,6 +71,7 @@ int main() {
 	const char *main_menu[] = {
 		"New Game",
 		"Continue Game",
+		"Memes",
 		"Settings",
 		"Exit"
 	};
@@ -75,11 +82,10 @@ int main() {
 
 	create_input_thread();
 
+
 	//Main loop
 
 	int game_state = 1;
-	//int key_index;
-	resume_input_thread();
 	while (game_state) {
 		switch (game_state)
 		{
@@ -89,16 +95,56 @@ int main() {
 				break;
 			//Title Screen
 			case 1:
-				adjustWindowSize(121, 40);
+				suspend_input_thread();
+				cls();
+				PlaySound(TEXT(BGMUSIC), NULL, (SND_FILENAME + SND_LOOP + SND_ASYNC));
 				//This line is the title screen string.
-				PlaySound(TEXT("taco.wav"), NULL, (SND_FILENAME + SND_LOOP + SND_ASYNC));
-				printf("                                                                                                                        \n     =                                                                                                                  \n     WXAI=               =   =IAAXI                                                          M=           A=            \n     XA =AXXA=          =WXAAI=         WI======                                              MA        IMI             \n     =W      IXA=        W             IWIIIIIIIXX   IA                                        AX=     XA               \n      MI       =AX=      W             AX        =M= AX         MX      IXAXI                    XX  =M=                \n       W          XA     MI            XA         =W AX         W=    XXI                         =MXM                  \n       XA          MI    XA            MI          W AX        IM    MA                            AMM=                 \n       =W          =W    XA            W=         XX IM        MI   IM                            IM  XA                \n        W           IM   XMAAAAAXAXA   W=      IXXI   W        W    MI        IA=                =W    IMI              \n        W           =W   =W            WI=IAXMXI      MI      IM    W=     XAXI MI               W=      AX             \n        W=          XA    W=          IWXAIIIIXXI     IX      XA    W=          IM              MI        =MI           \n        MI         IM     W=           MI       XX    =W      W     MI          MA             XX           MA          \n        XA        IM     =W            XI       IM     XA    MI     =MAAAIIIAAXXI             IM             =          \n        XA        W=     IM            XA       MI     =WAAXX=                                I                         \n        AX       AX      AX         == AX     IMA                                                                       \n        AX      XA       XA   =IAXXXI=  W   XXI                                                                         \n        XA    AM=        IAAAAI=        MXXX=                                                                           \n        XA=IXXA                         IA                                                                              \n        XXA=                                                                                                            \n                                                                                                                I       \n                                                                                   I ==        IAA=            =W       \n                              ===========                 I         ==IXXXAAA AXAXMWAII      IMIAMI   MX        MI      \n             =XXXX            WIIIIIIIIII=  AW=       AAAXWXAAI   AAII=XA         AX        MA    XX  WXX       =W      \n          =AXA               IM             MAMA          W            XA         W=       XX      W= W XA       W=     \n        AMA                  XA             W= IXA        W            XA        =M       AX       W =W  XA      W=     \n       IM                    W=             W    IW       W            W=        IX      =W        W =W   MA    =W      \n       MA                    W        ==   =M     W       W            W         IX      IM       IM =W    MI   IM      \n       W                    IWAAAXAAAAII   XA     W       W           IM         IX      =M       MI =W     MI  XA      \n       W                    XA             W=    AX       W           XA         IX       XX     XX  =W     =W= W=      \n       W=                   XI            =W    =W        W           W=         =W        XA  IMA   IM      IMIM       \n       IM                   MI            AX   =W=        W=IAXI     IM           W=       =XAXI     AX       MWX       \n        AM         =XI     =W       ==    AA =AM=    IIAXXMI=        AX         =IMXAAXAAAA=         AA        WA       \n         IXXI===AXXA       IWIAAAXXAII    AMXA=      ==              MI       =AI===                 I=                 \n            =III=           I=            ==                         MI                                                 \n                                                                                                                        \n                                                                                                                        \n                                                                                                            \n                                                                                                                        \n(C)69BC-Waffle http://nazr.in/18vx                                                                                      ");
+#pragma region TitleScreenArt
+				printf(
+					"                                                                                                                        \n"
+					"     =                                                                                                                  \n"
+					"     WXAI=               =   =IAAXI                                                          M=           A=            \n"
+					"     XA =AXXA=          =WXAAI=         WI======                                              MA        IMI             \n"
+					"     =W      IXA=        W             IWIIIIIIIXX   IA                                        AX=     XA               \n"
+					"      MI       =AX=      W             AX        =M= AX         MX      IXAXI                    XX  =M=                \n"
+					"       W          XA     MI            XA         =W AX         W=    XXI                         =MXM                  \n"
+					"       XA          MI    XA            MI          W AX        IM    MA                            AMM=                 \n"
+					"       =W          =W    XA            W=         XX IM        MI   IM                            IM  XA                \n"
+					"        W           IM   XMAAAAAXAXA   W=      IXXI   W        W    MI        IA=                =W    IMI              \n"
+					"        W           =W   =W            WI=IAXMXI      MI      IM    W=     XAXI MI               W=      AX             \n"
+					"        W=          XA    W=          IWXAIIIIXXI     IX      XA    W=          IM              MI        =MI           \n"
+					"        MI         IM     W=           MI       XX    =W      W     MI          MA             XX           MA          \n"
+					"        XA        IM     =W            XI       IM     XA    MI     =MAAAIIIAAXXI             IM             =          \n"
+					"        XA        W=     IM            XA       MI     =WAAXX=                                I                         \n"
+					"        AX       AX      AX         == AX     IMA                                                                       \n"
+					"        AX      XA       XA   =IAXXXI=  W   XXI                                                                         \n"
+					"        XA    AM=        IAAAAI=        MXXX=                                                                           \n"
+					"        XA=IXXA                         IA                                                                              \n"
+					"        XXA=                                                                                                            \n"
+					"                                                                                                                I       \n"
+					"                                                                                   I ==        IAA=            =W       \n"
+					"                              ===========                 I         ==IXXXAAA AXAXMWAII      IMIAMI   MX        MI      \n"
+					"             =XXXX            WIIIIIIIIII=  AW=       AAAXWXAAI   AAII=XA         AX        MA    XX  WXX       =W      \n"
+					"          =AXA               IM             MAMA          W            XA         W=       XX      W= W XA       W=     \n"
+					"        AMA                  XA             W= IXA        W            XA        =M       AX       W =W  XA      W=     \n"
+					"       IM                    W=             W    IW       W            W=        IX      =W        W =W   MA    =W      \n"
+					"       MA                    W        ==   =M     W       W            W         IX      IM       IM =W    MI   IM      \n"
+					"       W                    IWAAAXAAAAII   XA     W       W           IM         IX      =M       MI =W     MI  XA      \n"
+					"       W                    XA             W=    AX       W           XA         IX       XX     XX  =W     =W= W=      \n"
+					"       W=                   XI            =W    =W        W           W=         =W        XA  IMA   IM      IMIM       \n"
+					"       IM                   MI            AX   =W=        W=IAXI     IM           W=       =XAXI     AX       MWX       \n"
+					"        AM         =XI     =W       ==    AA =AM=    IIAXXMI=        AX         =IMXAAXAAAA=         AA        WA       \n"
+					"         IXXI===AXXA       IWIAAAXXAII    AMXA=      ==              MI       =AI===                 I=                 \n"
+					"            =III=           I=            ==                         MI                                                 \n"
+					"                                                                                                                        \n"
+					"                                                                                                                        \n"
+					"                                                                                                                        \n"
+					"                                                                                                                        \n"
+					"(C) 69BC-Waffle http://nazr.in/18vx                                                                                     ");
+#pragma endregion TitleScreenArt
 				COORD flash_letters_coord = {44, 37};
 				int flash_letters = 0;
-				//char flash_delay_key[20];
-				//RegGetValue(HKEY_CURRENT_USER, "Control Panel\\Desktop", "CursorBlinkRate", RRF_RT_REG_SZ, 0, flash_delay_key, sizeof(flash_delay_key));
-				//int flash_delay = atoi(flash_delay_key) * 10;
-				int flash_delay = 5300;
+				int flash_delay = 10000;
 				while (_kbhit() == 0) {
 					if (flash_letters == 2 * flash_delay) {
 						flash_letters = 0;
@@ -117,7 +163,9 @@ int main() {
 				break;
 			//Main Menu
 			case 2:
-				//cls(GetStdHandle(STD_OUTPUT_HANDLE));
+				//adjustWindowSize(80, 25);
+				cls();
+				printf("This is where the main menu is supposed to be, but it doesn't exist yet.\n\nEnjoy GBJ.");
 				while(1) {}
 				break;
 		}
