@@ -27,9 +27,6 @@
     <ClCompile Include="hawaii.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hexembed.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="key_stuff.h">
@@ -42,9 +39,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="hawaii.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hexembed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
