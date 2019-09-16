@@ -188,19 +188,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="hawaii.c" />
+    <ClCompile Include="hexembed.c" />
     <ClCompile Include="key_stuff.c" />
     <ClCompile Include="screen_stuff.c" />
     <ClCompile Include="main_game.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hawaii.h" />
+    <ClInclude Include="hexembed.h" />
     <ClInclude Include="key_stuff.h" />
     <ClInclude Include="screen_stuff.h" />
     <ClInclude Include="main_game.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="taco.wav">
-      <FileType>Media</FileType>
+      <FileType>Document</FileType>
       <DeploymentContent>true</DeploymentContent>
     </Media>
   </ItemGroup>
