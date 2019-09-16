@@ -22,6 +22,45 @@ char okina[] = "'";
 char *hawaiify(char *character, int position) {
 	switch (character[0])
 	{
+		case 'P':
+			character[0] = 'p';
+			break;
+		case 'K':
+			character[0] = 'k';
+			break;
+		case 'H':
+			character[0] = 'h';
+			break;
+		case 'L':
+			character[0] = 'l';
+			break;
+		case 'M':
+			character[0] = 'm';
+			break;
+		case 'N':
+			character[0] = 'n';
+			break;
+		case 'W':
+			character[0] = 'w';
+			break;
+		case 'A':
+			character[0] = 'a';
+			break;
+		case 'E':
+			character[0] = 'e';
+			break;
+		case 'I':
+			character[0] = 'i';
+			break;
+		case 'O':
+			character[0] = 'o';
+			break;
+		case 'U':
+			character[0] = 'u';
+			break;
+	}
+	switch (character[0])
+	{
 		default:
 			return illegal_character;
 		case 'p':
