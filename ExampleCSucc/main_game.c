@@ -45,10 +45,10 @@
 //	return 0;
 //}
 
-#include "hawaii.h"
+//#include "hawaii.h"
 
 int main() {
-	main2();
+	//main2();
 	SetConsoleTitle("Debug X: C Edition");
 	//adjustWindowSize(80, 25);
 	adjustWindowSize(121, 40);
