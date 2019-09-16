@@ -12,6 +12,7 @@
 
 #pragma warning(disable:4996)
 
+char multiple_words[] = "";
 char illegal_character[] = "";
 char double_consonant[] = "";
 char ending_consonant[] = "";
@@ -63,6 +64,8 @@ char *hawaiify(char *character, int position) {
 	{
 		default:
 			return illegal_character;
+		case ' ':
+			return multiple_words;
 		case 'p':
 		case 'k':
 		case 'h':
@@ -201,32 +204,36 @@ int main2() {
 		}
 		for (int j = 0; j < input_length; j++) {
 			output_temp = hawaiify(&word[j], j);
-			if ((i == 0) && ((output_temp == illegal_character) || (output_temp == double_consonant) || (output_temp == ending_consonant) || (output_temp == wtf))) {
+			if ((i == 0) && ((output_temp == multiple_words) || (output_temp == illegal_character) || (output_temp == double_consonant) || (output_temp == ending_consonant) || (output_temp == wtf))) {
+				if (output_temp[0] != '') {
+					i = 3;
+				}
 				switch (output_temp[0])
 				{
 					case '':
-						printf("Character %c is not allowed.", word[j]);
+						printf("Character %c is not allowed.\n", word[j]);
 						break;
 					case '':
-						printf("Double consonants: %c%c", word[j], word[j + 1]);
+						printf("Double consonants: %c%c\n", word[j], word[j + 1]);
 						break;
 					case '':
-						printf("Consonant %c at end of the word.", word[j]);
+						printf("Consonant %c at end of the word.\n", word[j]);
 						break;
 					case '':
-						printf("WTF did you do?");
+						printf("WTF did you do?\n");
 						break;
 				}
 				j = input_length;
-				i = 3;
 			}
 			else if (output_temp != okina) {
 				if (i == 0) {
 					output_length += strlen(output_temp);
 				}
 				else {
-					memcpy((output_string + (output_index * sizeof(char))), output_temp, (strlen(output_temp) * sizeof(char)));
-					output_index += strlen(output_temp);
+					if ((output_string + (output_index * sizeof(char))) != 0) {
+						memcpy((output_string + (output_index * sizeof(char))), output_temp, (strlen(output_temp) * sizeof(char)));
+						output_index += strlen(output_temp);
+					}
 				}
 			}
 			else if (i == 1) {
