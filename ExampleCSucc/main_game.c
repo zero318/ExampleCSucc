@@ -48,7 +48,9 @@
 //#include "hawaii.h"
 
 int main() {
+	//Hawaii Mode Enable
 	//main2();
+
 	SetConsoleTitle("Debug X: C Edition");
 	//adjustWindowSize(80, 25);
 	adjustWindowSize(121, 40);
