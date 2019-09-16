@@ -190,7 +190,7 @@ int main2() {
 	}
 	char *output_temp;
 	size_t output_length = -1;
-	char* output_string = NULL;
+	char *output_string = NULL;
 	size_t output_index = 0;
 	for (int i = 0; i < 3; i++) {
 		//This same loop is reused for sizing the output string and initializing it
