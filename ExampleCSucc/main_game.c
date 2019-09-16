@@ -5,7 +5,7 @@
 	Wassup, it's ya boi skinny comment.
 */
 
-#ifdef _MSC_VER
+#ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
@@ -13,7 +13,6 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
-//#include <stdbool.h>
 
 #include <conio.h>
 #include <Windows.h>
@@ -45,11 +44,11 @@
 //	return 0;
 //}
 
-//#include "hawaii.h"
+#include "hawaii.h"
 
 int main() {
 	//Hawaii Mode Enable
-	//main2();
+	main2();
 
 	SetConsoleTitle("Debug X: C Edition");
 	//adjustWindowSize(80, 25);
@@ -70,13 +69,13 @@ int main() {
 		"Back"
 	};
 
-	const char *main_menu[] = {
+	/*const char *main_menu[] = {
 		"New Game",
 		"Continue Game",
 		"Memes",
 		"Settings",
 		"Exit"
-	};
+	};*/
 		
 	create_keys(keys, sizeof(keys));
 	
@@ -99,7 +98,7 @@ int main() {
 			case 1:
 				suspend_input_thread();
 				cls();
-				PlaySound(TEXT(BGMUSIC), NULL, (SND_FILENAME + SND_LOOP + SND_ASYNC));
+				PlaySound(TEXT("taco.wav"), NULL, (SND_FILENAME + SND_LOOP + SND_ASYNC));
 				//This line is the title screen string.
 #pragma region TitleScreenArt
 				printf(
