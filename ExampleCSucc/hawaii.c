@@ -12,53 +12,23 @@
 
 #pragma warning(disable:4996)
 
-char multiple_words[] = "";
-char illegal_character[] = "";
-char double_consonant[] = "";
-char ending_consonant[] = "";
-char wtf[] = "";
-
-char okina[] = "'";
+char okina[] = "'", multiple_words[] = "", illegal_character[] = "", double_consonant[] = "", ending_consonant[] = "", wtf[] = "";
 
 char *hawaiify(char *character, int position) {
 	switch (character[0])
 	{
-		case 'P':
-			character[0] = 'p';
-			break;
-		case 'K':
-			character[0] = 'k';
-			break;
-		case 'H':
-			character[0] = 'h';
-			break;
-		case 'L':
-			character[0] = 'l';
-			break;
-		case 'M':
-			character[0] = 'm';
-			break;
-		case 'N':
-			character[0] = 'n';
-			break;
-		case 'W':
-			character[0] = 'w';
-			break;
-		case 'A':
-			character[0] = 'a';
-			break;
-		case 'E':
-			character[0] = 'e';
-			break;
-		case 'I':
-			character[0] = 'i';
-			break;
-		case 'O':
-			character[0] = 'o';
-			break;
-		case 'U':
-			character[0] = 'u';
-			break;
+		case 'P': character[0] = 'p'; break;
+		case 'K': character[0] = 'k'; break;
+		case 'H': character[0] = 'h'; break;
+		case 'L': character[0] = 'l'; break;
+		case 'M': character[0] = 'm'; break;
+		case 'N': character[0] = 'n'; break;
+		case 'W': character[0] = 'w'; break;
+		case 'A': character[0] = 'a'; break;
+		case 'E': character[0] = 'e'; break;
+		case 'I': character[0] = 'i'; break;
+		case 'O': character[0] = 'o'; break;
+		case 'U': character[0] = 'u'; break;
 	}
 	switch (character[0])
 	{
@@ -66,123 +36,77 @@ char *hawaiify(char *character, int position) {
 			return illegal_character;
 		case ' ':
 			return multiple_words;
-		case 'p':
-		case 'k':
-		case 'h':
-		case 'l':
-		case 'm':
-		case 'n':
-		case '\'':
-		case 'w':
+		case 'p': case 'k': case 'h': case 'l': case 'm': case 'n': case '\'': case 'w':
 			switch (character[1])
 			{
 				case '\0':
 					return ending_consonant;
-				case 'p':
-				case 'k':
-				case 'h':
-				case 'l':
-				case 'm':
-				case 'n':
-				case '\'':
-				case 'w':
+				case 'p': case 'k': case 'h': case 'l': case 'm': case 'n': case '\'': case 'w':
 					return double_consonant;
 			}
-		case 'a':
-		case 'e':
-		case 'i':
-		case 'o':
-		case 'u':
+		case 'a': case 'e': case 'i': case 'o': case 'u':
 			break;
 	}
 	switch (character[0])
 	{
-		case 'p':
-			return "p";
-		case 'k':
-			return "k";
-		case 'h':
-			return "h";
-		case 'l':
-			return "l";
-		case 'm':
-			return "m";
-		case 'n':
-			return "n";
-		case '\'':
-			return okina;
+		case 'p': return "p";
+		case 'k': return "k";
+		case 'h': return "h";
+		case 'l': return "l";
+		case 'm': return "m";
+		case 'n': return "n";
+		case '\'': return okina;
 		case 'w':
 			if (position == 0) {
 				return "w";
 			}
 			else {
-				switch (character[-1])
-				{
-					case 'a':
-					case 'o':
-					case 'u':
-					default:
+				switch (character[-1]) {
+					case 'a': case 'o': case 'u': default:
 						return "w";
-					case 'e':
-					case 'i':
+					case 'e': case 'i':
 						return "v";
 				}
 			}
 		case 'a':
-			switch (character[1])
-			{
-				case 'e':
-				case 'i':
+			switch (character[1]) {
+				case 'e': case 'i':
 					return "eye-";
-				case 'o':
-				case 'u':
+				case 'o': case 'u':
 					return "ow-";
 				default:
 					return "ah-";
 			}
 		case 'e':
-			switch (character[1])
-			{
-				case 'i':
-					return "ay-";
-				default:
-					return "eh-";
+			switch (character[1]) {
+				case 'i': return "ay-";
+				default: return "eh-";
 			}
 		case 'i':
-			switch (character[1])
-			{
-				case 'u':
-					return "ew-";
-				default:
-					return "ee-";
+			switch (character[1]) {
+				case 'u': return "ew-";
+				default: return "ee-";
 			}
 		case 'o':
-			switch (character[1])
-			{
-				case 'i':
-					return "oy-";
-				case 'u':
-					return "ow-";
-				default:
-					return "oh-";
+			switch (character[1]) {
+				case 'i': return "oy-";
+				case 'u': return "ow-";
+				default: return "oh-";
 			}
 		case 'u':
-			switch (character[1])
-			{
-				case 'i':
-					return "ooey-";
-				default:
-					return "oo-";
+			switch (character[1]) {
+				case 'i': return "ooey-";
+				default: return "oo-";
 			}
 	}
-	return wtf;
+	return wtf;//It shouldn't be possible to reach this, but you never know.
 }
 
 int main2() {
 	PlaySound(TEXT(BGMUSIC), NULL, (SND_FILENAME + SND_LOOP + SND_ASYNC));//lol
 	printf("Enter a Hawaiian word:\n");
 	fflush(stdout);
-	char word[BUFSIZ];//I'd rather call this input_string
+	char word[BUFSIZ];//I'd rather call this variable input_string, but meh
 	(void)scanf("%s", &word);
 	int input_length = 0;
 	while (word[input_length] != '\0') {
@@ -198,7 +122,7 @@ int main2() {
 		if (i == 1) {
 			output_string = (char*)malloc(output_length * sizeof(char));
 		}
-		if (i == 2) {
+		if (i == 2) {//For some reason putting the printf in the loop made an error shut up
 			output_string[output_length] = '\0';
 			printf("%s\n", output_string);
 		}
@@ -209,20 +133,15 @@ int main2() {
 					if (output_temp[0] != '') {
 						i = 3;
 					}
-					switch (output_temp[0])
-					{
-					case '':
-						printf("Character %c is not allowed.\n", word[j]);
-						break;
-					case '':
-						printf("Double consonants: %c%c\n", word[j], word[j + 1]);
-						break;
-					case '':
-						printf("Consonant %c at end of the word.\n", word[j]);
-						break;
-					case '':
-						printf("WTF did you do?\n");
-						break;
+					switch (output_temp[0]) {
+						case '':
+							printf("Character %c is not allowed.\n", word[j]); break;
+						case '':
+							printf("Double consonants: %c%c\n", word[j], word[j + 1]); break;
+						case '':
+							printf("Consonant %c at end of the word.\n", word[j]); break;
+						case '':
+							printf("WTF did you do?\n"); break;
 					}
 					j = input_length;
 				}
@@ -230,17 +149,13 @@ int main2() {
 					if (i == 0) {
 						output_length += strlen(output_temp);
 					}
-					else {
-						if ((output_string + (output_index * sizeof(char))) != 0) {
-							memcpy((output_string + (output_index * sizeof(char))), output_temp, (strlen(output_temp) * sizeof(char)));
-							output_index += strlen(output_temp);
-						}
+					else if ((output_string + (output_index * sizeof(char))) != 0) {//condition to make a warning shut up
+						memcpy((output_string + (output_index * sizeof(char))), output_temp, (strlen(output_temp) * sizeof(char)));
+						output_index += strlen(output_temp);
 					}
 				}
-				else if (i == 1) {
-					if (output_string) {
-						output_string[output_index - 1] = '\'';
-					}
+				else if ((i == 1) && output_string) {//condition to make a warning shut up
+					output_string[output_index - 1] = '\'';
 				}
 			}
 		}
