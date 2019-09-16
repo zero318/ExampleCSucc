@@ -1152,18 +1152,21 @@ void print_keycode(int *input_key)
 void create_keys(const char *key_names[], unsigned int size_of_keys) {
 	if (keys_created == 0) {
 		key_count = size_of_keys / sizeof(key_names[0]);	//This local is used to make a warning shut up
-		key_mappings = malloc(key_count * sizeof(key_map));
-		if (key_mappings == NULL) {
-			printf("malloc of size %d failed!\n", (int)(key_count * sizeof(key_map)));
-			exit(1);
+		if (key_count >= 1) {
+			key_mappings = malloc(key_count * sizeof(key_map));
+			if (key_mappings == NULL) {
+				printf("malloc of size %d failed!\n", (int)(key_count * sizeof(key_map)));
+				exit(1);
+			}
+			else {
+				for (int i = 0; i < key_count; i++) {
+					key_mappings[i].key_name = key_names[i];
+					key_mappings[i].key_code[0] = 0;
+					key_mappings[i].key_code[1] = 0;
+				}
+			}
+			keys_created = 1;
 		}
-		for (int i = 0; i < key_count; i++) {
-#pragma warning(suppress:6386)
-			key_mappings[i].key_name = key_names[i];
-			key_mappings[i].key_code[0] = 0;
-			key_mappings[i].key_code[1] = 0;
-		}
-		keys_created = 1;
 	}
 }
 
