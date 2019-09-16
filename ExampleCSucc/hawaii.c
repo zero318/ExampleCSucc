@@ -193,23 +193,24 @@ int main2() {
 	char *output_string = NULL;
 	size_t output_index = 0;
 	for (int i = 0; i < 3; i++) {
-		//This same loop is reused for sizing the output string and initializing it
+		//This same loop is reused for sizing the output string, initializing it, and printing it.
 		//i == 0: size;		i == 1: initialize;		i == 2: print
 		if (i == 1) {
 			output_string = (char*)malloc(output_length * sizeof(char));
 		}
-		else if (i == 2) {
+		if (i == 2) {
 			output_string[output_length] = '\0';
 			printf("%s\n", output_string);
 		}
-		for (int j = 0; j < input_length; j++) {
-			output_temp = hawaiify(&word[j], j);
-			if ((i == 0) && ((output_temp == multiple_words) || (output_temp == illegal_character) || (output_temp == double_consonant) || (output_temp == ending_consonant) || (output_temp == wtf))) {
-				if (output_temp[0] != '') {
-					i = 3;
-				}
-				switch (output_temp[0])
-				{
+		else {
+			for (int j = 0; j < input_length; j++) {
+				output_temp = hawaiify(&word[j], j);
+				if ((i == 0) && ((output_temp == multiple_words) || (output_temp == illegal_character) || (output_temp == double_consonant) || (output_temp == ending_consonant) || (output_temp == wtf))) {
+					if (output_temp[0] != '') {
+						i = 3;
+					}
+					switch (output_temp[0])
+					{
 					case '':
 						printf("Character %c is not allowed.\n", word[j]);
 						break;
@@ -222,23 +223,24 @@ int main2() {
 					case '':
 						printf("WTF did you do?\n");
 						break;
+					}
+					j = input_length;
 				}
-				j = input_length;
-			}
-			else if (output_temp != okina) {
-				if (i == 0) {
-					output_length += strlen(output_temp);
-				}
-				else {
-					if ((output_string + (output_index * sizeof(char))) != 0) {
-						memcpy((output_string + (output_index * sizeof(char))), output_temp, (strlen(output_temp) * sizeof(char)));
-						output_index += strlen(output_temp);
+				else if (output_temp != okina) {
+					if (i == 0) {
+						output_length += strlen(output_temp);
+					}
+					else {
+						if ((output_string + (output_index * sizeof(char))) != 0) {
+							memcpy((output_string + (output_index * sizeof(char))), output_temp, (strlen(output_temp) * sizeof(char)));
+							output_index += strlen(output_temp);
+						}
 					}
 				}
-			}
-			else if (i == 1) {
-				if (output_string) {
-					output_string[output_index - 1] = '\'';
+				else if (i == 1) {
+					if (output_string) {
+						output_string[output_index - 1] = '\'';
+					}
 				}
 			}
 		}
