@@ -9,15 +9,15 @@
 #include <mmsystem.h>
 #include "main_game.h"
 
-//Yes, I used ASCII control characters as error codes. Deal with it.
-#define DCE ''
-#define DC1 ''
-#define DC2 ''
-#define DC3 ''
-#define DC4 ''
+//Yes, I used control characters as error codes. Deal with it.
+#define DCE '\x10'
+#define DC1 '\x11'
+#define DC2 '\x12'
+#define DC3 '\x13'
+#define DC4 '\x14'
 
 char okina[] = "'",
-screw_null_references[] = "",
+screw_null_references[] = {},
 //These are arrays so that they can be returned by hawaiify without a warning about levels of indirection
 multiple_words[] = { DCE },
 illegal_character[] = { DC1 },
