@@ -2,22 +2,30 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include <stdio.h>
-#include <stdlib.h>
+/*
+	Hawaiian Translation
+	9/15/2019
+*/
 
-#include <Windows.h>
-#include <mmsystem.h>
-#include "main_game.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 //Yes, I used control characters as error codes. Deal with it.
-#define DCE '\x10'
-#define DC1 '\x11'
-#define DC2 '\x12'
-#define DC3 '\x13'
-#define DC4 '\x14'
+#define DCE ''
+#define DC1 ''
+#define DC2 ''
+#define DC3 ''
+#define DC4 ''
 
 char okina[] = "'",
-screw_null_references[] = {},
+eye_dip[] = "eye-",
+ow_dip[] = "ow-",
+ay_dip[] = "ay-",
+ew_dip[] = "ew-",
+oy_dip[] = "oy-",
+ooey_dip[] = "ooey-",
+aui_special[] = "ah-wee-",
+screw_null_references[] = "",
 //These are arrays so that they can be returned by hawaiify without a warning about levels of indirection
 multiple_words[] = { DCE },
 illegal_character[] = { DC1 },
@@ -27,8 +35,7 @@ wtf[] = { DC4 };
 
 char *hawaiify(char *character, int position) {
 	//If the letter is a capital, just pretend it isn't since that doesn't affect the output
-	switch (character[0])
-	{
+	switch (character[0]) {
 		case 'P': character[0] = 'p'; break;
 		case 'K': character[0] = 'k'; break;
 		case 'H': character[0] = 'h'; break;
@@ -48,8 +55,7 @@ char *hawaiify(char *character, int position) {
 		case ' ':
 			return multiple_words;
 		case 'p': case 'k': case 'h': case 'l': case 'm': case 'n': case '\'': case 'w':
-			switch (character[1])
-			{
+			switch (character[1]) {
 				case '\0'://End of string
 					return ending_consonant;
 				case 'p': case 'k': case 'h': case 'l': case 'm': case 'n': case '\'': case 'w':
@@ -71,46 +77,47 @@ char *hawaiify(char *character, int position) {
 		case 'n': return "n";
 		case '\'': return okina;
 		case 'w':
-			if (position == 0) {
-				return "w";
-			}
-			else {
-				//This is in an else statement to avoid invalid reads when position == 0
+			if (position > 0) {//Condition avoids invalid reads when position == 0
 				switch (character[-1]) {
-					case 'a': case 'o': case 'u': default:
-						return "w";
 					case 'e': case 'i':
 						return "v";
+					case 'a': case 'o': case 'u': default:
+						break;
 				}
 			}
+			return "w";
 		case 'a':
 			switch (character[1]) {
 				case 'e': case 'i':
-					return "eye-";
-				case 'o': case 'u':
-					return "ow-";
+					return eye_dip;
+				case 'u':
+					if (character[2] == 'i') {
+						return aui_special;
+					}
+				case 'o':
+					return ow_dip;
 				default:
 					return "ah-";
 			}
 		case 'e':
 			switch (character[1]) {
-				case 'i': return "ay-";
+				case 'i': return ay_dip;
 				default: return "eh-";
 			}
 		case 'i':
 			switch (character[1]) {
-				case 'u': return "ew-";
+				case 'u': return ew_dip;
 				default: return "ee-";
 			}
 		case 'o':
 			switch (character[1]) {
-				case 'i': return "oy-";
-				case 'u': return "ow-";
+				case 'i': return oy_dip;
+				case 'u': return ow_dip;
 				default: return "oh-";
 			}
 		case 'u':
 			switch (character[1]) {
-				case 'i': return "ooey-";
+				case 'i': return ooey_dip;
 				default: return "oo-";
 			}
 	}
@@ -118,7 +125,6 @@ char *hawaiify(char *character, int position) {
 }
 
 int main2() {
-	async_song();//lol
 	printf("Enter a Hawaiian word:\n");
 	fflush(stdout);
 	char word[BUFSIZ];//I'd rather call this variable input_string, but meh
@@ -127,7 +133,7 @@ int main2() {
 	for (input_length = 0; word[input_length] != '\0'; input_length++) {/*Empty for loops are fun. :D*/}
 	char *output_temp = screw_null_references;
 	int output_temp_length = 0;
-	size_t output_length = -1;
+	size_t output_length = 0;
 	char* output_string = screw_null_references;
 	size_t output_index = 0;
 	for (int i = 0; i < 3; i++) {
@@ -136,11 +142,15 @@ int main2() {
 		//i == 0: size;		i == 1: initialize;		i == 2: print
 		if (i == 1) {
 			output_string = (char*)malloc((output_length) * sizeof(char));
+			if (output_string == NULL) {
+				printf("malloc of size %d failed!\n", (int)(output_length * sizeof(char)));
+				exit(1);
+			}
 		}
 		if (i == 2) {//For some reason putting the printf in the loop made an error shut up *shrug*
 			//Words always end with vowels, so my string builder ends up tacking an extra - on the end of the output.
 			//Since the string isn't terminated yet, that extra - can be conveniently and safely converted to a terminator
-			output_string[output_length] = '\0';
+			output_string[output_length - 1] = '\0';
 			printf("%s\n", output_string);
 		}
 		else {
@@ -169,8 +179,19 @@ int main2() {
 						output_length += output_temp_length;
 					}
 					else {
-						memcpy((output_string + (output_index * sizeof(char))), output_temp, (output_temp_length * sizeof(char)));
+						//Can I just say, screw that whole "no standard library functions" thing?
+						for (int k = 0; k < output_temp_length; k++) {
+							output_string[output_index + k] = output_temp[k];
+						}
+						//memcpy((output_string + (output_index * sizeof(char))), output_temp, (output_temp_length * sizeof(char)));
 						output_index += output_temp_length;
+					}
+					//This makes sure that diphthongs don't have each half counted separately
+					if ((output_temp == eye_dip) || (output_temp == ow_dip) || (output_temp == ay_dip) || (output_temp == ew_dip) || (output_temp == oy_dip) || (output_temp == ooey_dip)) {
+						j++;
+					}
+					else if (output_temp == aui_special) {
+						j += 2;
 					}
 				}
 				//This condition can only be reached if output_temp == okina
@@ -180,7 +201,10 @@ int main2() {
 			}
 		}
 	}
-	while (1) {};
+	if (output_string != screw_null_references) {
+		free(output_string);
+	}
+	//while (1) {};
 	//printf("BE GONE HAWAII\n");
 	return 0;
 }
