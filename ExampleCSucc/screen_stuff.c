@@ -77,7 +77,12 @@ void adjustWindowSize(short width, short height) {
 	SetConsoleWindowInfo(hStdout, ok, &test);
 }
 
-int menu_choice() {
+int print_menu(const char *menu_title, const char *menu_items[], unsigned int number_of_menu_items) {
+	printf("%s", menu_title);
+	for (unsigned int i = 0; i < number_of_menu_items; i++) {
+		printf(" %d. %s\n", i, menu_items[i]);
+	}
+	int selected_menu_index = 0;
 
-	return 0;
+	return selected_menu_index;
 }

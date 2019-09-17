@@ -1,4 +1,4 @@
-﻿/*
+﻿/* SuccMaster was here
 	Example C Program
 	8/26/2019
 	
@@ -80,6 +80,7 @@ int main() {
 	//Bind keys at startup
 
 	//The array index of get_mapped_key() corresponds to the index of the key in this list
+	//There's also an enum in the header
 	const char *keys[] = {
 		"Move Up",
 		"Move Left",
@@ -89,13 +90,13 @@ int main() {
 		"Back"
 	};
 
-	/*const char *main_menu[] = {
+	const char *main_menu[] = {
 		"New Game",
 		"Continue Game",
 		"Memes",
 		"Settings",
 		"Exit"
-	};*/
+	};
 		
 	create_keys(keys, sizeof(keys));
 	
@@ -189,6 +190,7 @@ int main() {
 				cls();
 				printf("This is where the main menu is supposed to be, but it doesn't exist yet.\n\nEnjoy GBJ.");
 				while(1) {}
+
 				break;
 		}
 		/*if (key_index == -1) {
