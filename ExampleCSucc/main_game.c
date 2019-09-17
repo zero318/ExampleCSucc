@@ -49,16 +49,26 @@
 //char succ[] = "Chris lamented, \"Why doesn't my code work?\" without knowing that \\' could solve his problem.";
 //char succ2[] = {'C','h','r','i','s',' ','l','a','m','e','n','t','e','d',',',' ','"','W','h','y',' ','d','o','e','s','n','\'','t',' ','m','y',' ','c','o','d','e',' ','w','o','r','k','?','"',' ','w','i','t','h','o','u','t',' ','k','n','o','w','i','n','g',' ','t','h','a','t',' ','\\','\'',' ','c','o','u','l','d',' ','s','o','l','v','e',' ','h','i','s',' ','p','r','o','b','l','e','m','.','\0'};
 
+#define HAWAII_MODE 1
+#define HAWAII_LOOP 1
+
 void go_to_hawaii() {
 	play_async_song("taco.wav");//lol
-	while (1) {
+	if (HAWAII_LOOP == 0) {
 		main2();
+	}
+	while (1) {
+		if (HAWAII_LOOP) {
+			main2();
+		}
 	}
 }
 
 int main() {
 	//Hawaii Mode Enable
-	go_to_hawaii();
+	if (HAWAII_MODE) {
+		go_to_hawaii();
+	}
 
 	SetConsoleTitle("Debug X: C Edition");
 	//adjustWindowSize(80, 25);

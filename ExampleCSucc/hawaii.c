@@ -78,7 +78,7 @@ char *hawaiify(char *character, int position) {
 		case '\'': return okina;
 		case 'w':
 			if (position > 0) {//Condition avoids invalid reads when position == 0
-				switch (character[-1]) {
+				switch (character[-1]) {//A negative index will read backwards apparently.
 					case 'e': case 'i':
 						return "v";
 					case 'a': case 'o': case 'u': default:
@@ -131,17 +131,15 @@ int main2() {
 	(void)scanf("%s", word);
 	int input_length;
 	for (input_length = 0; word[input_length] != '\0'; input_length++) {/*Empty for loops are fun. :D*/}
-	char *output_temp = screw_null_references;
+	char *output_temp = screw_null_references, *output_string = screw_null_references;
 	int output_temp_length = 0;
-	size_t output_length = 0;
-	char* output_string = screw_null_references;
-	size_t output_index = 0;
+	size_t output_length = 0, output_index = 0;
 	for (int i = 0; i < 3; i++) {
 		//This same loop is reused for sizing the output string, initializing it, and printing it.
 		//This loop exists 
 		//i == 0: size;		i == 1: initialize;		i == 2: print
 		if (i == 1) {
-			output_string = (char*)malloc((output_length) * sizeof(char));
+			output_string = (char*)calloc(output_length, sizeof(char));
 			if (output_string == NULL) {
 				printf("malloc of size %d failed!\n", (int)(output_length * sizeof(char)));
 				exit(1);
