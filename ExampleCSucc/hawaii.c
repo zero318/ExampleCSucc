@@ -11,11 +11,11 @@
 #include <stdio.h>
 
 //Yes, I used control characters as error codes. Deal with it.
-#define DCE ''
-#define DC1 ''
-#define DC2 ''
-#define DC3 ''
-#define DC4 ''
+#define DCE 16
+#define DC1 17
+#define DC2 18
+#define DC3 19
+#define DC4 20
 
 char okina[] = "'",
 eye_dip[] = "eye-",
@@ -157,16 +157,16 @@ int main2() {
 				if ((i == 0) && ((output_temp == multiple_words) || (output_temp == illegal_character) || (output_temp == double_consonant) || (output_temp == ending_consonant) || (output_temp == wtf))) {
 					if (output_temp[0] != DCE) {//If the error isn't multiple_words, forcibly exit.
 						i = 3;
-					}
-					switch (output_temp[0]) {
-						case DC1:
-							printf("Character %c is not allowed.\n", (int)word[j]); break;
-						case DC2:
-							printf("Double consonants: %c%c\n", (int)word[j], (int)word[j + 1]); break;
-						case DC3:
-							printf("Consonant %c at end of the word.\n", (int)word[j]); break;
-						case DC4:
-							printf("WTF did you do?\n"); break;
+						switch (output_temp[0]) {
+							case DC1:
+								printf("Character %c is not allowed.\n", (int)word[j]); break;
+							case DC2:
+								printf("Double consonants: %c%c\n", (int)word[j], (int)word[j + 1]); break;
+							case DC3:
+								printf("Consonant %c at end of the word.\n", (int)word[j]); break;
+							case DC4:
+								printf("WTF did you do?\n"); break;
+						}
 					}
 					j = input_length;
 				}
